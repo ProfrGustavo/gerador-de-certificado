@@ -1,0 +1,357 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #001F54, #00308F);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.main-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.input-section {
+    flex: 1;
+    min-width: 300px;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.preview-section {
+    flex: 1;
+    min-width: 300px;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+    font-family: 'Playfair Display', serif;
+    color: #001F54;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #D4AF37;
+}
+
+textarea {
+    width: 100%;
+    height: 200px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    resize: vertical;
+    margin-bottom: 15px;
+}
+
+.instructions {
+    background: #f0f7ff;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.instructions ul {
+    margin-left: 20px;
+}
+
+.instructions li {
+    margin-bottom: 5px;
+}
+
+.btn {
+    display: inline-block;
+    background: #001F54;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.btn:hover {
+    background: #00308F;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-gold {
+    background: #D4AF37;
+    color: #001F54;
+}
+
+.btn-gold:hover {
+    background: #E5C158;
+}
+
+.certificate-preview {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+    overflow: auto;
+}
+
+.certificate-list {
+    margin-top: 20px;
+}
+
+.certificate-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-left: 4px solid #001F54;
+}
+
+.certificate-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #666;
+    font-size: 0.9rem;
+    border-top: 1px solid #eee;
+}
+
+/* Estilos do certificado */
+.certificate {
+    background: linear-gradient(to bottom, #F9F9F9, #EDEDED);
+    position: relative;
+    padding: 50px;
+    text-align: center;
+    overflow: hidden;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Bordas duplas */
+.certificate::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid #001F54;
+    z-index: 1;
+}
+
+.certificate::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border: 1px solid #001F54;
+    z-index: 1;
+}
+
+/* Faixas diagonais */
+.corner-decoration {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    z-index: 2;
+}
+
+.top-left {
+    top: -100px;
+    left: -100px;
+    transform: rotate(45deg);
+    background: linear-gradient(135deg, #001F54 0%, #001F54 70%, #D4AF37 70%, #D4AF37 85%, white 85%);
+}
+
+.bottom-right {
+    bottom: -100px;
+    right: -100px;
+    transform: rotate(45deg);
+    background: linear-gradient(135deg, #001F54 0%, #001F54 70%, #D4AF37 70%, #D4AF37 85%, white 85%);
+}
+
+.certificate-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    color: #001F54;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 3;
+}
+
+.certificate-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #2F3E46;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 3;
+}
+
+.participant-name {
+    font-family: 'Great Vibes', cursive;
+    font-size: 52px;
+    color: #001F54;
+    margin: 30px 0;
+    position: relative;
+    z-index: 3;
+}
+
+.certificate-body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #001F54;
+    line-height: 1.8;
+    margin: 40px 0;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 3;
+}
+
+.certificate-body p {
+    margin-bottom: 15px;
+}
+
+.signature {
+    margin-top: 60px;
+    position: relative;
+    z-index: 3;
+}
+
+.signature-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    color: #001F54;
+    margin-top: 30px;
+}
+
+.signature-role {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #2F3E46;
+    font-style: italic;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Estilos para preview reduzido */
+.certificate-preview .certificate {
+    transform: scale(0.7);
+    transform-origin: top center;
+    min-height: 500px;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .certificate {
+        padding: 30px;
+        min-height: 600px;
+    }
+    
+    .certificate-title {
+        font-size: 36px;
+    }
+    
+    .participant-name {
+        font-size: 42px;
+    }
+    
+    .certificate-body {
+        font-size: 14px;
+    }
+    
+    .corner-decoration {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .top-left {
+        top: -75px;
+        left: -75px;
+    }
+    
+    .bottom-right {
+        bottom: -75px;
+        right: -75px;
+    }
+    
+    .certificate-preview .certificate {
+        transform: scale(0.5);
+    }
+}
