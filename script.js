@@ -76,69 +76,115 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Atualizar a pré-visualização
     function updatePreview(name) {
-        const preview = createCertificateElement(name);
+        const preview = createCertificateElement(name, true);
         certificatePreview.innerHTML = '';
         certificatePreview.appendChild(preview);
     }
     
     // Baixar um certificado individual
-    function downloadCertificate(name, index) {
-        const certificateElement = createCertificateElement(name);
+    async function downloadCertificate(name, index) {
+        try {
+            // Criar elemento otimizado para PDF
+            const certificateElement = createCertificateElement(name, false);
+            
+            // Adicionar ao documento temporariamente
+            const tempContainer = document.createElement('div');
+            tempContainer.style.position = 'fixed';
+            tempContainer.style.left = '-9999px';
+            tempContainer.style.top = '0';
+            tempContainer.appendChild(certificateElement);
+            document.body.appendChild(tempContainer);
+            
+            // Configurações do PDF
+            const opt = {
+                margin: 0,
+                filename: `certificado_${name.replace(/\s+/g, '_')}.pdf`,
+                image: { 
+                    type: 'jpeg', 
+                    quality: 0.98 
+                },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                    logging: true,
+                    width: certificateElement.scrollWidth,
+                    height: certificateElement.scrollHeight,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: certificateElement.scrollWidth,
+                    windowHeight: certificateElement.scrollHeight
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'landscape' 
+                }
+            };
+            
+            // Gerar PDF
+            await html2pdf().set(opt).from(certificateElement).save();
+            
+            // Limpar elemento temporário
+            document.body.removeChild(tempContainer);
+            
+        } catch (error) {
+            console.error('Erro ao gerar PDF:', error);
+            alert('Erro ao gerar PDF. Tente novamente.');
+        }
+    }
+    
+    // Criar elemento de certificado
+    function createCertificateElement(name, isPreview = false) {
+        const certificateElement = document.createElement('div');
+        certificateElement.className = 'certificate' + (isPreview ? ' certificate-preview-mode' : ' certificate-print-mode');
         
-        // Configurações do PDF
-        const opt = {
-            margin: 0,
-            filename: `certificado_${name.replace(/\s+/g, '_')}.pdf`,
-            image: { type: 'jpeg', quality: 1 },
-            html2canvas: { 
-                scale: 2,
-                useCORS: true,
-                logging: false,
-                width: certificateElement.scrollWidth,
-                height: certificateElement.scrollHeight
-            },
-            jsPDF: { 
-                unit: 'mm', 
-                format: 'a4', 
-                orientation: 'landscape' 
-            }
-        };
+        certificateElement.innerHTML = `
+            <div class="corner-decoration top-left"></div>
+            <div class="corner-decoration bottom-right"></div>
+            
+            <h1 class="certificate-title">CERTIFICADO</h1>
+            <p class="certificate-subtitle">ESTE CERTIFICADO COMPROVA QUE</p>
+            
+            <h2 class="participant-name">${name}</h2>
+            
+            <div class="certificate-body">
+                <p>CONCLUIU COM ÊXITO O CURSO GASTRONOMIA MINISTRADO POR BORCELLE</p>
+                <p>ENTRE 28/08/2019 E 28/08/2022 E DEMONSTROU DEDICAÇÃO E EMPENHO EXEMPLARES.</p>
+                <p>PARABÉNS E BOA SORTE NO FUTURO. EMITIDO EM 13/09/2022 PELA BORCELLE.</p>
+            </div>
+            
+            <div class="signature">
+                <div class="signature-name">Ariel Lima</div>
+                <div class="signature-role">Diretora Responsável</div>
+            </div>
+        `;
         
-        // Gerar PDF
-        html2pdf().set(opt).from(certificateElement).save();
+        return certificateElement;
     }
     
     // Baixar todos os certificados
-    function downloadAllCertificates() {
+    async function downloadAllCertificates() {
         if (certificates.length === 0) {
             alert('Nenhum certificado para baixar. Gere os certificados primeiro.');
             return;
         }
         
-        if (certificates.length > 10) {
-            if (!confirm(`Você está prestes a baixar ${certificates.length} certificados. Isso pode levar alguns instantes. Deseja continuar?`)) {
+        if (certificates.length > 5) {
+            if (!confirm(`Você está prestes a baixar ${certificates.length} certificados. Isso pode levar alguns minutos. Deseja continuar?`)) {
                 return;
             }
         }
         
         alert(`Iniciando download de ${certificates.length} certificados...`);
         
-        // Baixar certificados com intervalo para evitar sobrecarga
-        certificates.forEach((name, index) => {
-            setTimeout(() => {
-                downloadCertificate(name, index);
-            }, index * 1500); // Espaçar os downloads por 1.5 segundos
-        });
-    }
-    
-    // Criar elemento de certificado
-    function createCertificateElement(name) {
-        const certificateElement = certificateTemplate.cloneNode(true);
-        certificateElement.id = '';
-        certificateElement.classList.remove('hidden');
-        certificateElement.querySelector('#certName').textContent = name;
+        // Baixar certificados sequencialmente
+        for (let i = 0; i < certificates.length; i++) {
+            await downloadCertificate(certificates[i], i);
+            // Aguardar um pouco entre os downloads
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
         
-        return certificateElement;
+        alert('Todos os certificados foram baixados!');
     }
     
     // Limpar a lista
