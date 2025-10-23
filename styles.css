@@ -175,40 +175,65 @@ footer {
     border-top: 1px solid #eee;
 }
 
-/* Estilos do certificado - BASE */
-.certificate {
+/* ===== ESTILOS DO CERTIFICADO ===== */
+
+/* Certificado para preview */
+.certificate-preview-mode {
     background: linear-gradient(to bottom, #F9F9F9, #EDEDED);
     position: relative;
+    padding: 40px;
+    text-align: center;
+    overflow: hidden;
+    max-width: 800px;
+    margin: 0 auto;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transform: scale(0.8);
+    transform-origin: top center;
+}
+
+/* Certificado para PDF - DIMENSÕES EXATAS A4 LANDSCAPE */
+.certificate-print-mode {
+    width: 297mm; /* Largura A4 landscape */
+    height: 210mm; /* Altura A4 landscape */
+    background: linear-gradient(to bottom, #F9F9F9, #EDEDED);
+    position: relative;
+    padding: 15mm; /* Margem interna segura */
     text-align: center;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    page-break-inside: avoid;
+    box-sizing: border-box;
+    page-break-after: always;
 }
 
-/* Versão para preview */
-.certificate-preview-mode {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px;
-    min-height: 500px;
-    transform: scale(0.8);
-    transform-origin: top center;
+/* Bordas duplas - ajustadas para PDF */
+.certificate-print-mode::before {
+    content: '';
+    position: absolute;
+    top: 8mm;
+    left: 8mm;
+    right: 8mm;
+    bottom: 8mm;
+    border: 1px solid #001F54;
+    z-index: 1;
 }
 
-/* Versão para impressão/PDF */
-.certificate-print-mode {
-    width: 280mm; /* Menor que A4 para dar margem */
-    height: 190mm;
-    margin: 0;
-    padding: 25mm 20mm; /* Margens generosas */
-    box-shadow: none;
-    background: white !important;
+.certificate-print-mode::after {
+    content: '';
+    position: absolute;
+    top: 12mm;
+    left: 12mm;
+    right: 12mm;
+    bottom: 12mm;
+    border: 1px solid #001F54;
+    z-index: 1;
 }
 
-/* Bordas duplas */
-.certificate::before {
+.certificate-preview-mode::before {
     content: '';
     position: absolute;
     top: 10px;
@@ -219,7 +244,7 @@ footer {
     z-index: 1;
 }
 
-.certificate::after {
+.certificate-preview-mode::after {
     content: '';
     position: absolute;
     top: 15px;
@@ -230,7 +255,7 @@ footer {
     z-index: 1;
 }
 
-/* Faixas diagonais - ajustadas para PDF */
+/* Faixas diagonais - otimizadas para PDF */
 .corner-decoration {
     position: absolute;
     z-index: 2;
@@ -242,38 +267,27 @@ footer {
 }
 
 .certificate-print-mode .corner-decoration {
-    width: 150px;
-    height: 150px;
+    width: 120px; /* Menor para caber melhor */
+    height: 120px;
 }
 
 .top-left {
-    top: -80px;
-    left: -80px;
+    top: -60px;
+    left: -60px;
     transform: rotate(45deg);
     background: linear-gradient(135deg, #001F54 0%, #001F54 70%, #D4AF37 70%, #D4AF37 85%, white 85%);
 }
 
 .bottom-right {
-    bottom: -80px;
-    right: -80px;
+    bottom: -60px;
+    right: -60px;
     transform: rotate(45deg);
     background: linear-gradient(135deg, #001F54 0%, #001F54 70%, #D4AF37 70%, #D4AF37 85%, white 85%);
 }
 
-/* Títulos ajustados para PDF */
-.certificate-preview-mode .certificate-title {
+/* Títulos - ajustados para PDF */
+.certificate-title {
     font-family: 'Playfair Display', serif;
-    font-size: 42px;
-    color: #001F54;
-    letter-spacing: 4px;
-    margin-bottom: 10px;
-    position: relative;
-    z-index: 3;
-}
-
-.certificate-print-mode .certificate-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 36px;
     color: #001F54;
     letter-spacing: 3px;
     margin-bottom: 8px;
@@ -281,11 +295,19 @@ footer {
     z-index: 3;
 }
 
+.certificate-preview-mode .certificate-title {
+    font-size: 42px;
+}
+
+.certificate-print-mode .certificate-title {
+    font-size: 32px; /* Menor para PDF */
+}
+
 .certificate-subtitle {
     font-family: 'Poppins', sans-serif;
     color: #2F3E46;
     letter-spacing: 2px;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     text-transform: uppercase;
     position: relative;
     z-index: 3;
@@ -296,13 +318,13 @@ footer {
 }
 
 .certificate-print-mode .certificate-subtitle {
-    font-size: 11px;
+    font-size: 10px; /* Menor para PDF */
 }
 
 .participant-name {
     font-family: 'Great Vibes', cursive;
     color: #001F54;
-    margin: 25px 0;
+    margin: 20px 0;
     position: relative;
     z-index: 3;
 }
@@ -312,14 +334,14 @@ footer {
 }
 
 .certificate-print-mode .participant-name {
-    font-size: 40px;
+    font-size: 36px; /* Menor para PDF */
 }
 
 .certificate-body {
     font-family: 'Poppins', sans-serif;
     color: #001F54;
-    line-height: 1.6;
-    margin: 30px 0;
+    line-height: 1.5;
+    margin: 25px 0;
     text-transform: uppercase;
     position: relative;
     z-index: 3;
@@ -330,15 +352,15 @@ footer {
 }
 
 .certificate-print-mode .certificate-body {
-    font-size: 13px;
+    font-size: 12px; /* Menor para PDF */
 }
 
 .certificate-body p {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .signature {
-    margin-top: 40px;
+    margin-top: 30px;
     position: relative;
     z-index: 3;
 }
@@ -346,7 +368,7 @@ footer {
 .signature-name {
     font-family: 'Poppins', sans-serif;
     color: #001F54;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .certificate-preview-mode .signature-name {
@@ -354,7 +376,7 @@ footer {
 }
 
 .certificate-print-mode .signature-name {
-    font-size: 14px;
+    font-size: 13px; /* Menor para PDF */
 }
 
 .signature-role {
@@ -362,7 +384,7 @@ footer {
     color: #2F3E46;
     font-style: italic;
     letter-spacing: 1px;
-    margin-top: 4px;
+    margin-top: 3px;
 }
 
 .certificate-preview-mode .signature-role {
@@ -370,7 +392,7 @@ footer {
 }
 
 .certificate-print-mode .signature-role {
-    font-size: 11px;
+    font-size: 10px; /* Menor para PDF */
 }
 
 .hidden {
@@ -399,21 +421,6 @@ footer {
     .certificate-preview-mode .certificate-body {
         font-size: 13px;
     }
-    
-    .certificate-preview-mode .corner-decoration {
-        width: 140px;
-        height: 140px;
-    }
-    
-    .top-left {
-        top: -60px;
-        left: -60px;
-    }
-    
-    .bottom-right {
-        bottom: -60px;
-        right: -60px;
-    }
 }
 
 /* Estilos específicos para impressão */
@@ -431,17 +438,17 @@ footer {
         position: absolute;
         left: 0;
         top: 0;
-        width: 100%;
-        height: 100%;
+        width: 297mm;
+        height: 210mm;
         margin: 0;
         padding: 15mm;
         box-shadow: none;
         background: white !important;
     }
     
-    /* Garantir que as fontes sejam carregadas para impressão */
+    /* Configuração da página para impressão */
     @page {
-        margin: 0;
         size: landscape;
+        margin: 0;
     }
 }
