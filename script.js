@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearBtn = document.getElementById('clearBtn');
     const certificatePreview = document.getElementById('certificatePreview');
     const certificateList = document.getElementById('certificateList');
-    const certificateTemplate = document.getElementById('certificateTemplate');
     
     let certificates = [];
     
@@ -95,9 +94,12 @@ document.addEventListener('DOMContentLoaded', function() {
             tempContainer.appendChild(certificateElement);
             document.body.appendChild(tempContainer);
             
-            // Configurações do PDF
+            // Aguardar um pouco para garantir que o elemento foi renderizado
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Configurações do PDF otimizadas
             const opt = {
-                margin: 0,
+                margin: [5, 5, 5, 5], // Margens pequenas e iguais
                 filename: `certificado_${name.replace(/\s+/g, '_')}.pdf`,
                 image: { 
                     type: 'jpeg', 
@@ -106,20 +108,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 html2canvas: { 
                     scale: 2,
                     useCORS: true,
-                    logging: true,
+                    logging: false,
                     width: certificateElement.scrollWidth,
                     height: certificateElement.scrollHeight,
                     scrollX: 0,
                     scrollY: 0,
                     windowWidth: certificateElement.scrollWidth,
-                    windowHeight: certificateElement.scrollHeight
+                    windowHeight: certificateElement.scrollHeight,
+                    backgroundColor: '#FFFFFF'
                 },
                 jsPDF: { 
                     unit: 'mm', 
                     format: 'a4', 
-                    orientation: 'landscape' 
+                    orientation: 'landscape',
+                    compress: true
                 }
             };
+            
+            console.log('Gerando PDF para:', name);
+            console.log('Dimensões do elemento:', certificateElement.scrollWidth, certificateElement.scrollHeight);
             
             // Gerar PDF
             await html2pdf().set(opt).from(certificateElement).save();
@@ -175,16 +182,29 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        alert(`Iniciando download de ${certificates.length} certificados...`);
+        const downloadBtn = downloadAllBtn;
+        const originalText = downloadBtn.textContent;
+        downloadBtn.textContent = 'Baixando...';
+        downloadBtn.disabled = true;
         
-        // Baixar certificados sequencialmente
-        for (let i = 0; i < certificates.length; i++) {
-            await downloadCertificate(certificates[i], i);
-            // Aguardar um pouco entre os downloads
-            await new Promise(resolve => setTimeout(resolve, 1000));
+        try {
+            // Baixar certificados sequencialmente
+            for (let i = 0; i < certificates.length; i++) {
+                await downloadCertificate(certificates[i], i);
+                // Aguardar um pouco entre os downloads
+                if (i < certificates.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                }
+            }
+            
+            alert('Todos os certificados foram baixados com sucesso!');
+        } catch (error) {
+            console.error('Erro no download em massa:', error);
+            alert('Ocorreu um erro durante o download. Alguns certificados podem não ter sido baixados.');
+        } finally {
+            downloadBtn.textContent = originalText;
+            downloadBtn.disabled = false;
         }
-        
-        alert('Todos os certificados foram baixados!');
     }
     
     // Limpar a lista
