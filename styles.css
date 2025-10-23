@@ -175,9 +175,7 @@ footer {
     border-top: 1px solid #eee;
 }
 
-/* ===== ESTILOS DO CERTIFICADO ===== */
-
-/* Certificado para preview */
+/* Estilos do certificado para preview */
 .certificate-preview-mode {
     background: linear-gradient(to bottom, #F9F9F9, #EDEDED);
     position: relative;
@@ -194,15 +192,14 @@ footer {
     transform-origin: top center;
 }
 
-/* Certificado para PDF - DIMENSÕES EXATAS A4 LANDSCAPE */
+/* Estilos do certificado para PDF */
 .certificate-print-mode {
-    width: 297mm; /* Largura A4 landscape */
-    height: 210mm; /* Altura A4 landscape */
+    width: 297mm;
+    height: 210mm;
     background: linear-gradient(to bottom, #F9F9F9, #EDEDED);
     position: relative;
-    padding: 15mm; /* Margem interna segura */
+    padding: 20mm;
     text-align: center;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -210,30 +207,9 @@ footer {
     page-break-after: always;
 }
 
-/* Bordas duplas - ajustadas para PDF */
+/* Bordas duplas */
+.certificate-preview-mode::before,
 .certificate-print-mode::before {
-    content: '';
-    position: absolute;
-    top: 8mm;
-    left: 8mm;
-    right: 8mm;
-    bottom: 8mm;
-    border: 1px solid #001F54;
-    z-index: 1;
-}
-
-.certificate-print-mode::after {
-    content: '';
-    position: absolute;
-    top: 12mm;
-    left: 12mm;
-    right: 12mm;
-    bottom: 12mm;
-    border: 1px solid #001F54;
-    z-index: 1;
-}
-
-.certificate-preview-mode::before {
     content: '';
     position: absolute;
     top: 10px;
@@ -244,7 +220,8 @@ footer {
     z-index: 1;
 }
 
-.certificate-preview-mode::after {
+.certificate-preview-mode::after,
+.certificate-print-mode::after {
     content: '';
     position: absolute;
     top: 15px;
@@ -255,7 +232,7 @@ footer {
     z-index: 1;
 }
 
-/* Faixas diagonais - otimizadas para PDF */
+/* Faixas diagonais */
 .corner-decoration {
     position: absolute;
     z-index: 2;
@@ -267,30 +244,30 @@ footer {
 }
 
 .certificate-print-mode .corner-decoration {
-    width: 120px; /* Menor para caber melhor */
-    height: 120px;
+    width: 150px;
+    height: 150px;
 }
 
 .top-left {
-    top: -60px;
-    left: -60px;
+    top: -80px;
+    left: -80px;
     transform: rotate(45deg);
     background: linear-gradient(135deg, #001F54 0%, #001F54 70%, #D4AF37 70%, #D4AF37 85%, white 85%);
 }
 
 .bottom-right {
-    bottom: -60px;
-    right: -60px;
+    bottom: -80px;
+    right: -80px;
     transform: rotate(45deg);
     background: linear-gradient(135deg, #001F54 0%, #001F54 70%, #D4AF37 70%, #D4AF37 85%, white 85%);
 }
 
-/* Títulos - ajustados para PDF */
+/* Títulos */
 .certificate-title {
     font-family: 'Playfair Display', serif;
     color: #001F54;
-    letter-spacing: 3px;
-    margin-bottom: 8px;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
     position: relative;
     z-index: 3;
 }
@@ -300,14 +277,14 @@ footer {
 }
 
 .certificate-print-mode .certificate-title {
-    font-size: 32px; /* Menor para PDF */
+    font-size: 36px;
 }
 
 .certificate-subtitle {
     font-family: 'Poppins', sans-serif;
     color: #2F3E46;
     letter-spacing: 2px;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     text-transform: uppercase;
     position: relative;
     z-index: 3;
@@ -318,13 +295,13 @@ footer {
 }
 
 .certificate-print-mode .certificate-subtitle {
-    font-size: 10px; /* Menor para PDF */
+    font-size: 11px;
 }
 
 .participant-name {
     font-family: 'Great Vibes', cursive;
     color: #001F54;
-    margin: 20px 0;
+    margin: 25px 0;
     position: relative;
     z-index: 3;
 }
@@ -334,14 +311,14 @@ footer {
 }
 
 .certificate-print-mode .participant-name {
-    font-size: 36px; /* Menor para PDF */
+    font-size: 40px;
 }
 
 .certificate-body {
     font-family: 'Poppins', sans-serif;
     color: #001F54;
-    line-height: 1.5;
-    margin: 25px 0;
+    line-height: 1.6;
+    margin: 30px 0;
     text-transform: uppercase;
     position: relative;
     z-index: 3;
@@ -352,15 +329,15 @@ footer {
 }
 
 .certificate-print-mode .certificate-body {
-    font-size: 12px; /* Menor para PDF */
+    font-size: 13px;
 }
 
 .certificate-body p {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .signature {
-    margin-top: 30px;
+    margin-top: 40px;
     position: relative;
     z-index: 3;
 }
@@ -368,7 +345,7 @@ footer {
 .signature-name {
     font-family: 'Poppins', sans-serif;
     color: #001F54;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .certificate-preview-mode .signature-name {
@@ -376,7 +353,7 @@ footer {
 }
 
 .certificate-print-mode .signature-name {
-    font-size: 13px; /* Menor para PDF */
+    font-size: 14px;
 }
 
 .signature-role {
@@ -384,7 +361,7 @@ footer {
     color: #2F3E46;
     font-style: italic;
     letter-spacing: 1px;
-    margin-top: 3px;
+    margin-top: 4px;
 }
 
 .certificate-preview-mode .signature-role {
@@ -392,7 +369,7 @@ footer {
 }
 
 .certificate-print-mode .signature-role {
-    font-size: 10px; /* Menor para PDF */
+    font-size: 11px;
 }
 
 .hidden {
@@ -421,34 +398,19 @@ footer {
     .certificate-preview-mode .certificate-body {
         font-size: 13px;
     }
-}
-
-/* Estilos específicos para impressão */
-@media print {
-    body * {
-        visibility: hidden;
+    
+    .certificate-preview-mode .corner-decoration {
+        width: 140px;
+        height: 140px;
     }
     
-    .certificate-print-mode,
-    .certificate-print-mode * {
-        visibility: visible;
+    .top-left {
+        top: -60px;
+        left: -60px;
     }
     
-    .certificate-print-mode {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 297mm;
-        height: 210mm;
-        margin: 0;
-        padding: 15mm;
-        box-shadow: none;
-        background: white !important;
-    }
-    
-    /* Configuração da página para impressão */
-    @page {
-        size: landscape;
-        margin: 0;
+    .bottom-right {
+        bottom: -60px;
+        right: -60px;
     }
 }

@@ -95,22 +95,22 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.appendChild(tempContainer);
             
             // Aguardar para garantir renderização
-            await new Promise(resolve => setTimeout(resolve, 300));
+            await new Promise(resolve => setTimeout(resolve, 500));
             
             // Configurações do PDF otimizadas para A4 landscape
             const opt = {
-                margin: 0, // Sem margem - já temos padding interno
+                margin: [0, 0, 0, 0], // Margens zeradas
                 filename: `certificado_${name.replace(/\s+/g, '_')}.pdf`,
                 image: { 
                     type: 'jpeg', 
-                    quality: 1.0 // Qualidade máxima
+                    quality: 0.98 
                 },
                 html2canvas: { 
-                    scale: 3, // Escala maior para melhor qualidade
+                    scale: 2,
                     useCORS: true,
                     logging: false,
-                    width: 1123, // 297mm em pixels (297 * 3.79)
-                    height: 794,  // 210mm em pixels (210 * 3.79)
+                    width: 1123, // Largura em pixels para A4 landscape (297mm)
+                    height: 794,  // Altura em pixels para A4 landscape (210mm)
                     scrollX: 0,
                     scrollY: 0,
                     windowWidth: 1123,
@@ -120,31 +120,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 jsPDF: { 
                     unit: 'mm', 
                     format: 'a4', 
-                    orientation: 'landscape',
-                    compress: true,
-                    precision: 100 // Alta precisão
+                    orientation: 'landscape'
                 }
             };
             
-            console.log('Gerando PDF para:', name);
-            
             // Gerar PDF
-            const pdf = await html2pdf().set(opt).from(certificateElement);
-            await pdf.save();
+            await html2pdf().set(opt).from(certificateElement).save();
             
             // Limpar elemento temporário
             document.body.removeChild(tempContainer);
             
         } catch (error) {
             console.error('Erro ao gerar PDF:', error);
-            alert('Erro ao gerar PDF. Tente novamente. Erro: ' + error.message);
+            alert('Erro ao gerar PDF. Tente novamente.');
         }
     }
     
     // Criar elemento de certificado
     function createCertificateElement(name, isPreview = false) {
         const certificateElement = document.createElement('div');
-        certificateElement.className = 'certificate' + (isPreview ? ' certificate-preview-mode' : ' certificate-print-mode');
+        certificateElement.className = isPreview ? 'certificate-preview-mode' : 'certificate-print-mode';
         
         certificateElement.innerHTML = `
             <div class="corner-decoration top-left"></div>
@@ -189,28 +184,17 @@ document.addEventListener('DOMContentLoaded', function() {
         downloadBtn.disabled = true;
         
         try {
-            let successCount = 0;
-            
             // Baixar certificados sequencialmente
             for (let i = 0; i < certificates.length; i++) {
-                try {
-                    await downloadCertificate(certificates[i], i);
-                    successCount++;
-                    
-                    // Aguardar entre os downloads
-                    if (i < certificates.length - 1) {
-                        await new Promise(resolve => setTimeout(resolve, 1000));
-                    }
-                } catch (error) {
-                    console.error(`Erro no certificado ${i}:`, error);
+                await downloadCertificate(certificates[i], i);
+                
+                // Aguardar entre os downloads
+                if (i < certificates.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
                 }
             }
             
-            if (successCount === certificates.length) {
-                alert('Todos os certificados foram baixados com sucesso!');
-            } else {
-                alert(`${successCount} de ${certificates.length} certificados foram baixados. Alguns podem ter falhado.`);
-            }
+            alert('Todos os certificados foram baixados com sucesso!');
         } catch (error) {
             console.error('Erro no download em massa:', error);
             alert('Ocorreu um erro durante o download. Alguns certificados podem não ter sido baixados.');
